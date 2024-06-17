@@ -1,0 +1,57 @@
+2024-06-17 13:36:19,495 - DEBUG - Listbox updated with sorted ratings.
+2024-06-17 13:37:07,807 - DEBUG - Original Ratings: {'GTA5': 95.82, 'WoW': 91.91, 'ZeldaBotW': 89.29, 'ZeldaOOT': 82.46, 'SMB2': 66.01, 'Pong': 0.0, 'SmashUltimate': 94.59, 'SmashMelee': 88.92, 'Pikmin1': 81.18, 'Halo1': 90.14, 'LoL': 90.47, 'Starcraft2': 93.35, 'AoE2': 82.2, 'AoE4': 94.17, 'Tetris': 8.37, 'PacMan': 15.9, 'FlappyBird': 6.62, 'Snake': 0.47, 'RDR2': 100.0, 'Witcher3': 94.78, 'Cyberpunk2077': 96.17, 'Skyrim': 91.75, 'EldenRing': 97.03, 'SM64': 82.77, 'GoldenEye007': 85.13, 'BanjoKazooie': 81.84, 'PerfectDark': 85.53, 'iRacing': 91.99, 'FurthestFrontiers': 83.2, 'DawnOfMan': 77.86, 'ManorLords': 85.36, 'RTS': 80.6, 'FPS': 88.22, 'RPG': 87.61, 'Simulation': 79.54, 'Puzzle': 61.56, 'StarCitizen': 97.51, 'CrashBandicoot': 82.61, 'SpyroTheDragon': 82.58, 'DonkeyKong64': 86.87, 'SonicAdventure': 82.85, 'GexEnterTheGecko': 82.09, 'CrocLegendOfTheGobbos': 81.83, 'TombRaider': 82.38, 'ConkersBadFurDay': 87.24, 'JakAndDaxter': 87.53, 'SouthParkN64': 60.04, 'GTASA': 82.56, 'Portal2': 77.56, 'DarkSoulsII': 86.99, 'MassEffect2': 85.99753086419753}
+2024-06-17 13:37:07,807 - DEBUG - Min Score: 0.0, Max Score: 100.0
+2024-06-17 13:37:07,807 - DEBUG - Normalized score for GTA5: 95.82
+2024-06-17 13:37:07,807 - DEBUG - Normalized score for WoW: 91.91
+2024-06-17 13:37:07,807 - DEBUG - Normalized score for ZeldaBotW: 89.29
+2024-06-17 13:37:07,807 - DEBUG - Normalized score for ZeldaOOT: 82.46
+2024-06-17 13:37:07,807 - DEBUG - Normalized score for SMB2: 66.01
+2024-06-17 13:37:07,807 - DEBUG - Normalized score for Pong: 0.00
+2024-06-17 13:37:07,807 - DEBUG - Normalized score for SmashUltimate: 94.59
+2024-06-17 13:37:07,807 - DEBUG - Normalized score for SmashMelee: 88.92
+2024-06-17 13:37:07,807 - DEBUG - Normalized score for Pikmin1: 81.18
+2024-06-17 13:37:07,807 - DEBUG - Normalized score for Halo1: 90.14
+2024-06-17 13:37:07,807 - DEBUG - Normalized score for LoL: 90.47
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for Starcraft2: 93.35
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for AoE2: 82.20
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for AoE4: 94.17
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for Tetris: 8.37
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for PacMan: 15.90
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for FlappyBird: 6.62
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for Snake: 0.47
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for RDR2: 100.00
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for Witcher3: 94.78
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for Cyberpunk2077: 96.17
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for Skyrim: 91.75
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for EldenRing: 97.03
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for SM64: 82.77
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for GoldenEye007: 85.13
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for BanjoKazooie: 81.84
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for PerfectDark: 85.53
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for iRacing: 91.99
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for FurthestFrontiers: 83.20
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for DawnOfMan: 77.86
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for ManorLords: 85.36
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for RTS: 80.60
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for FPS: 88.22
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for RPG: 87.61
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for Simulation: 79.54
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for Puzzle: 61.56
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for StarCitizen: 97.51
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for CrashBandicoot: 82.61
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for SpyroTheDragon: 82.58
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for DonkeyKong64: 86.87
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for SonicAdventure: 82.85
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for GexEnterTheGecko: 82.09
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for CrocLegendOfTheGobbos: 81.83
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for TombRaider: 82.38
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for ConkersBadFurDay: 87.24
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for JakAndDaxter: 87.53
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for SouthParkN64: 60.04
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for GTASA: 82.56
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for Portal2: 77.56
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for DarkSoulsII: 86.99
+2024-06-17 13:37:07,808 - DEBUG - Normalized score for MassEffect2: 86.00
+2024-06-17 13:37:07,808 - DEBUG - Normalized Ratings: {'GTA5': 95.82, 'WoW': 91.91, 'ZeldaBotW': 89.29, 'ZeldaOOT': 82.46, 'SMB2': 66.01, 'Pong': 0.0, 'SmashUltimate': 94.59, 'SmashMelee': 88.92, 'Pikmin1': 81.18, 'Halo1': 90.14, 'LoL': 90.47, 'Starcraft2': 93.35, 'AoE2': 82.2, 'AoE4': 94.17, 'Tetris': 8.37, 'PacMan': 15.9, 'FlappyBird': 6.619999999999999, 'Snake': 0.4699999999999999, 'RDR2': 100.0, 'Witcher3': 94.78, 'Cyberpunk2077': 96.17, 'Skyrim': 91.75, 'EldenRing': 97.03, 'SM64': 82.77, 'GoldenEye007': 85.13, 'BanjoKazooie': 81.84, 'PerfectDark': 85.53, 'iRacing': 91.99, 'FurthestFrontiers': 83.2, 'DawnOfMan': 77.86, 'ManorLords': 85.36, 'RTS': 80.6, 'FPS': 88.22, 'RPG': 87.61, 'Simulation': 79.54, 'Puzzle': 61.56, 'StarCitizen': 97.51, 'CrashBandicoot': 82.61, 'SpyroTheDragon': 82.58, 'DonkeyKong64': 86.87, 'SonicAdventure': 82.85, 'GexEnterTheGecko': 82.09, 'CrocLegendOfTheGobbos': 81.83, 'TombRaider': 82.38, 'ConkersBadFurDay': 87.24, 'JakAndDaxter': 87.53, 'SouthParkN64': 60.040000000000006, 'GTASA': 82.56, 'Portal2': 77.56, 'DarkSoulsII': 86.99, 'MassEffect2': 85.99753086419753}
+2024-06-17 13:37:07,810 - DEBUG - Listbox updated with sorted ratings.
+2024-06-17 13:37:07,811 - INFO - Rating calculated and saved for MassEffect2: 86.00

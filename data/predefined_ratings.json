@@ -243,15 +243,15 @@
         "Scripting and Programming": 971
     },
     "Skyrim": {
-        "Graphics": 947,
-        "Physics and Collision Detection": 922,
-        "Level Design and World Building": 953,
-        "Gameplay Mechanics": 934,
-        "AI and NPC Behavior": 907,
-        "Audio": 909,
-        "UI and UX": 889,
-        "Multiplayer and Networking": 9,
-        "Scripting and Programming": 915
+        "Graphics": 942,
+        "Physics and Collision Detection": 887,
+        "Level Design and World Building": 960,
+        "Gameplay Mechanics": 933,
+        "AI and NPC Behavior": 912,
+        "Audio": 895,
+        "UI and UX": 905,
+        "Multiplayer and Networking": 875,
+        "Scripting and Programming": 920
     },
     "EldenRing": {
         "Graphics": 948,
@@ -516,5 +516,71 @@
         "UI and UX": 868,
         "Multiplayer and Networking": 104,
         "Scripting and Programming": 886
+    },
+    "SouthParkN64": {
+        "Graphics": 653,
+        "Physics and Collision Detection": 602,
+        "Level Design and World Building": 554,
+        "Gameplay Mechanics": 603,
+        "AI and NPC Behavior": 581,
+        "Audio": 622,
+        "UI and UX": 611,
+        "Multiplayer and Networking": 573,
+        "Scripting and Programming": 592
+    },
+    "GTASA": {
+        "Graphics": 832,
+        "Physics and Collision Detection": 811,
+        "Level Design and World Building": 854,
+        "Gameplay Mechanics": 822,
+        "AI and NPC Behavior": 803,
+        "Audio": 841,
+        "UI and UX": 819,
+        "Multiplayer and Networking": 808,
+        "Scripting and Programming": 829
+    },
+    "Portal2": {
+        "Graphics": 700,
+        "Physics and Collision Detection": 800,
+        "Level Design and World Building": 850,
+        "Gameplay Mechanics": 900,
+        "AI and NPC Behavior": 650,
+        "Audio": 780,
+        "UI and UX": 750,
+        "Multiplayer and Networking": 600,
+        "Scripting and Programming": 850
+    },
+    "DarkSoulsII": {
+        "Graphics": 878,
+        "Physics and Collision Detection": 862,
+        "Level Design and World Building": 890,
+        "Gameplay Mechanics": 880,
+        "AI and NPC Behavior": 870,
+        "Audio": 860,
+        "UI and UX": 850,
+        "Multiplayer and Networking": 840,
+        "Scripting and Programming": 880
+    },
+    "MassEffect2": {
+        "Graphics": 843,
+        "Physics and Collision Detection": 812,
+        "Level Design and World Building": 890,
+        "Gameplay Mechanics": 880,
+        "AI and NPC Behavior": 870,
+        "Audio": 860,
+        "UI and UX": 850,
+        "Multiplayer and Networking": 840,
+        "Scripting and Programming": 880
+    },
+    "Bloodborne": {
+        "Graphics": 892,
+        "Physics and Collision Detection": 845,
+        "Level Design and World Building": 901,
+        "Gameplay Mechanics": 899,
+        "AI and NPC Behavior": 865,
+        "Audio": 875,
+        "UI and UX": 882,
+        "Multiplayer and Networking": 860,
+        "Scripting and Programming": 890
     }
 }

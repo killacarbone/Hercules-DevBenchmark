@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 
 def get_data_file_path(filename):
@@ -31,3 +32,22 @@ def load_ratings_from_file():
     except FileNotFoundError:
         ratings_dict = {}
     return ratings_dict
+
+def normalize_ratings(ratings_dict):
+    logging.debug(f"Original Ratings: {ratings_dict}")
+    all_scores = list(ratings_dict.values())
+    min_score = min(all_scores)
+    max_score = max(all_scores)
+    logging.debug(f"Min Score: {min_score}, Max Score: {max_score}")
+    
+    normalized_ratings = {}
+    for game, score in ratings_dict.items():
+        normalized_score = (score - min_score) / (max_score - min_score) * 100
+        normalized_ratings[game] = normalized_score
+        logging.debug(f"Normalized score for {game}: {normalized_score:.2f}")
+    
+    logging.debug(f"Normalized Ratings: {normalized_ratings}")
+    return normalized_ratings
+
+
+
