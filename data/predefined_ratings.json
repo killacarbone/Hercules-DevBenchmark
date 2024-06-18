@@ -210,15 +210,15 @@
         "Scripting and Programming": 42
     },
     "RDR2": {
-        "Graphics": 987,
-        "Physics and Collision Detection": 968,
-        "Level Design and World Building": 975,
-        "Gameplay Mechanics": 982,
-        "AI and NPC Behavior": 952,
-        "Audio": 974,
-        "UI and UX": 961,
-        "Multiplayer and Networking": 989,
-        "Scripting and Programming": 962
+        "Graphics": 935,
+        "Physics and Collision Detection": 910,
+        "Level Design and World Building": 940,
+        "Gameplay Mechanics": 920,
+        "AI and NPC Behavior": 890,
+        "Audio": 915,
+        "UI and UX": 900,
+        "Multiplayer and Networking": 880,
+        "Scripting and Programming": 930
     },
     "Witcher3": {
         "Graphics": 972,
@@ -582,5 +582,60 @@
         "UI and UX": 882,
         "Multiplayer and Networking": 860,
         "Scripting and Programming": 890
+    },
+    "HollowKnight": {
+        "Graphics": 852,
+        "Physics and Collision Detection": 799,
+        "Level Design and World Building": 913,
+        "Gameplay Mechanics": 879,
+        "AI and NPC Behavior": 823,
+        "Audio": 881,
+        "UI and UX": 862,
+        "Multiplayer and Networking": 605,
+        "Scripting and Programming": 905
+    },
+    "DarkSouls3": {
+        "Graphics": 918,
+        "Physics and Collision Detection": 890,
+        "Level Design and World Building": 950,
+        "Gameplay Mechanics": 930,
+        "AI and NPC Behavior": 870,
+        "Audio": 900,
+        "UI and UX": 860,
+        "Multiplayer and Networking": 880,
+        "Scripting and Programming": 920
+    },
+    "AssassinsCreedValhalla": {
+        "Graphics": 890,
+        "Physics and Collision Detection": 870,
+        "Level Design and World Building": 920,
+        "Gameplay Mechanics": 910,
+        "AI and NPC Behavior": 880,
+        "Audio": 900,
+        "UI and UX": 870,
+        "Multiplayer and Networking": 860,
+        "Scripting and Programming": 880
+    },
+    "Overwatch2": {
+        "Graphics": 873,
+        "Physics and Collision Detection": 847,
+        "Level Design and World Building": 882,
+        "Gameplay Mechanics": 903,
+        "AI and NPC Behavior": 861,
+        "Audio": 892,
+        "UI and UX": 872,
+        "Multiplayer and Networking": 943,
+        "Scripting and Programming": 881
+    },
+    "CallOfDutyMW": {
+        "Graphics": 950,
+        "Physics and Collision Detection": 920,
+        "Level Design and World Building": 890,
+        "Gameplay Mechanics": 930,
+        "AI and NPC Behavior": 880,
+        "Audio": 940,
+        "UI and UX": 910,
+        "Multiplayer and Networking": 960,
+        "Scripting and Programming": 920
     }
 }

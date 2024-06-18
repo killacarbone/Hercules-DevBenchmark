@@ -7,6 +7,7 @@ import logging
 from .code_generator import parse_input_code
 from .file_operations import update_predefined_ratings, save_ratings_to_file, load_ratings_from_file, normalize_ratings
 from .rating_calculator import calculate_complexity_rating
+from .dynamic_weights import dynamic_weighting_criteria  # Import the dynamic weighting criteria
 
 
 # Setup logging
@@ -32,6 +33,12 @@ class GameRatingApp:
         
         self.ratings_dict = {}
         self.load_ratings()
+        
+        # Add genre selection dropdown
+        self.genre_var = tk.StringVar(root)
+        self.genre_var.set("Select Genre")  # default value
+        self.genre_dropdown = tk.OptionMenu(root, self.genre_var, *dynamic_weighting_criteria.keys())
+        self.genre_dropdown.pack()
 
     def load_ratings(self):
         try:
@@ -56,8 +63,9 @@ class GameRatingApp:
             game_data = json.loads(input_data)
             game_identifier = game_data["game_identifier"]
             ratings = game_data["ratings"]
+            genre = self.genre_var.get() if self.genre_var.get() != "Select Genre" else None
             update_predefined_ratings(game_identifier, ratings)
-            score = calculate_complexity_rating(ratings)
+            score = calculate_complexity_rating(ratings, genre)
             self.ratings_dict[game_identifier] = score
             normalized_ratings = normalize_ratings(self.ratings_dict)  # Normalize ratings
             save_ratings_to_file(normalized_ratings)  # Save normalized ratings
