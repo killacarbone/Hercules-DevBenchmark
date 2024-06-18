@@ -35,6 +35,10 @@ def load_ratings_from_file():
 
 def normalize_ratings(ratings_dict):
     logging.debug(f"Original Ratings: {ratings_dict}")
+    
+    if len(ratings_dict) <= 1:
+        return ratings_dict
+    
     all_scores = list(ratings_dict.values())
     min_score = min(all_scores)
     max_score = max(all_scores)
@@ -48,6 +52,7 @@ def normalize_ratings(ratings_dict):
     
     logging.debug(f"Normalized Ratings: {normalized_ratings}")
     return normalized_ratings
+
 
 
 
