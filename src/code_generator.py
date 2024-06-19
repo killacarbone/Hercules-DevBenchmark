@@ -1,8 +1,11 @@
-def generate_code(game_identifier, ratings):
+#code_generator.py
+
+import logging
+
     
-    # Define dynamic weighting criteria
-    dynamic_weighting_criteria = {
-        'RPG': {
+# Define dynamic weighting criteria
+dynamic_weighting_criteria = {
+    'RPG': {
             'Graphics': 20,
             'Gameplay Mechanics': 25,
             'Story': 30,
@@ -19,7 +22,7 @@ def generate_code(game_identifier, ratings):
         # Add more genres and criteria as needed
     }
     
-    factors = [
+factors = [
         'Graphics',
         'Physics and Collision Detection',
         'Level Design and World Building',
@@ -30,60 +33,47 @@ def generate_code(game_identifier, ratings):
         'Multiplayer and Networking',
         'Scripting and Programming'
     ]
+    
+def generate_code(game_identifier, ratings):
+    logging.debug(f"Generating code for game: {game_identifier}")
     
     code = game_identifier + '-'
     for factor in factors:
-        code += str(ratings[factor]).zfill(4)  # Pad with zeros for consistent length
-    
+        code += str(ratings[factor]).zfill(4)  # Pad with zeros for consistent length    
+    logging.debug(f"Generated code: {code}")
     return code
 
 def parse_input_code(input_code):
+    logging.debug(f"Parsing input code: {input_code}")
+    
     try:
         game_identifier, ratings_digits = input_code.split('-')
     except ValueError:
+        logging.error("Invalid input code format.")
         raise ValueError("Invalid input code format. Ensure it contains a hyphen separating the game identifier and the ratings.")
     
     print(f"Game Identifier: {game_identifier}")
+    logging.debug(f"Game Identifier: {game_identifier}")
     print(f"Ratings Digits: {ratings_digits}")
+    logging.debug(f"Ratings Digits: {ratings_digits}")
     
     # Ensure the ratings_digits length is a multiple of 4 and matches the number of factors
-    if len(ratings_digits) % 4 != 0:
-        print(f"Error: Ratings digits length ({len(ratings_digits)}) is not a multiple of 4.")
-        raise ValueError("Invalid input code: incorrect digit length.")
-    
-    if len(ratings_digits) // 4 != 9:
-        print(f"Error: Number of ratings ({len(ratings_digits) // 4}) does not match expected number of factors (9).")
-        raise ValueError("Invalid input code: incorrect number of ratings.")
+    if len(ratings_digits) % 4 != 0 or len(ratings_digits) // 4 != len(factors):
+        logging.error("Ratings digits length is not a multiple of 4 or does not match the expected number of factors.")
+        raise ValueError("Invalid input code: incorrect digit length or number of ratings.")
     
     try:
-        ratings_values = [
-            int(ratings_digits[i:i+4]) for i in range(0, len(ratings_digits), 4)
-        ]
+        ratings_values = [int(ratings_digits[i:i+4]) for i in range(0, len(ratings_digits), 4)]
     except ValueError:
+        logging.error("Ratings must be numeric values.")
         raise ValueError("Invalid input code: ratings must be numeric values.")
     
+    logging.debug(f"Ratings Values: {ratings_values}")
     print(f"Ratings Values: {ratings_values}")
     
-    factors = [
-        'Graphics',
-        'Physics and Collision Detection',
-        'Level Design and World Building',
-        'Gameplay Mechanics',
-        'AI and NPC Behavior',
-        'Audio',
-        'UI and UX',
-        'Multiplayer and Networking',
-        'Scripting and Programming'
-    ]
-    
-    # Ensure the length of ratings_values matches the number of factors
-    if len(ratings_values) != len(factors):
-        print(f"Error: Number of parsed ratings ({len(ratings_values)}) does not match number of factors ({len(factors)}).")
-        raise ValueError("Invalid input code: incorrect number of ratings.")
-    
+    # Map the parsed ratings to their respective factors
     ratings = dict(zip(factors, ratings_values))
-    
-    print(f"Parsed Ratings: {ratings}")
+    logging.debug(f"Parsed ratings: {ratings}")
     
     return game_identifier, ratings
 

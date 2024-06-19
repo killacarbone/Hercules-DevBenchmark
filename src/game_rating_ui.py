@@ -4,14 +4,13 @@ import tkinter as tk
 from tkinter import messagebox
 import csv
 import logging
-from .code_generator import parse_input_code
 from .file_operations import get_data_file_path, update_predefined_ratings, save_ratings_to_file, load_ratings_from_csv, normalize_ratings
 from .rating_calculator import calculate_complexity_rating
-from .dynamic_weights import dynamic_weighting_criteria, detect_genre  # Import the dynamic weighting criteria
+from .dynamic_weights import detect_genre  # Import detect_genre
 
 
 # Setup logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 class GameRatingApp:
@@ -41,6 +40,7 @@ class GameRatingApp:
             self.ratings_dict = load_ratings_from_csv(file_path)
             self.ratings_dict = normalize_ratings(self.ratings_dict)
             self.update_listbox()
+            logging.info("Ratings loaded and normalized.")
         except FileNotFoundError:
             self.ratings_dict = {}
             logging.warning("No existing ratings file found. Starting with an empty dictionary.")
@@ -56,6 +56,7 @@ class GameRatingApp:
 
     def calculate_rating(self):
         input_data = self.text.get("1.0", tk.END)
+        
         try:
             # Load CSV data from input
             csv_reader = csv.DictReader(input_data.strip().split('\n'))
@@ -74,18 +75,15 @@ class GameRatingApp:
                     'Scripting and Programming': int(row['Scripting and Programming'])
                 }
                 comments = row['Comments']
+                
+                logging.debug(f"Processing game: {game_title}, Genre: {genre}")
 
-                # Debug print to verify input data structure
-                logging.debug(f"Processing game: {game_title}, Genre: {genre}, Ratings: {ratings}, Comments: {comments}")
-
-                # Determine genre
                 detected_genre = detect_genre(ratings)
-                logging.debug(f"Selected/Detected genre: {detected_genre}")
-
-                # Update predefined ratings
+                logging.debug(f"Detected genre: {detected_genre}")
+                
                 update_predefined_ratings(game_title, ratings)
                 score = calculate_complexity_rating(ratings, detected_genre)
-                logging.debug(f"Calculated score: {score} for game: {game_title}")
+                logging.info(f"Calculated score for {game_title}: {score}")
 
                 self.ratings_dict[game_title] = {
                     'genre': detected_genre,
@@ -94,13 +92,10 @@ class GameRatingApp:
                     'comments': comments
                 }
 
-                normalized_ratings = normalize_ratings(self.ratings_dict)
-                logging.debug(f"Normalized Ratings: {normalized_ratings}")
-                save_ratings_to_file(normalized_ratings)  # Save normalized ratings
-                self.ratings_dict = normalized_ratings  # Update the ratings_dict with normalized ratings
+                self.ratings_dict = normalize_ratings(self.ratings_dict)
+                save_ratings_to_file(self.ratings_dict)
                 self.update_listbox()
-                logging.info(f"Rating calculated and saved for {game_title}: {normalized_ratings[game_title]['normalized_score']:.2f}")
-                messagebox.showinfo("Rating", f"Game Development Complexity Rating for {game_title}: {normalized_ratings[game_title]['normalized_score']:.2f}")
+                messagebox.showinfo("Rating", f"Game Development Complexity Rating for {game_title}: {self.ratings_dict[game_title]['normalized_score']:.2f}")
         except Exception as e:
             messagebox.showerror("Error", f"Unexpected error: {e}")
             logging.error(f"Unexpected error: {e}")
@@ -108,7 +103,7 @@ class GameRatingApp:
             self.text.delete("1.0", tk.END)
 
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
     root = tk.Tk()
     app = GameRatingApp(root)
     root.mainloop()

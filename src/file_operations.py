@@ -1,7 +1,9 @@
+#file_operations.py
+
 import csv
 import logging
 import os
-from .rating_calculator import calculate_complexity_rating  # Import the function
+from .rating_calculator import calculate_complexity_rating  # Adjusted import to match your structure
 
 
 def get_data_file_path(filename):
@@ -9,7 +11,7 @@ def get_data_file_path(filename):
 
 
 def update_predefined_ratings(game_identifier, ratings):
-    logging.debug(f"Updating predefined ratings for {game_identifier} with {ratings}")
+    logging.debug(f"Updating predefined ratings for {game_identifier}.")
     file_path = get_data_file_path('predefined_ratings.csv')
     try:
         with open(file_path, 'r', newline='', encoding='utf-8') as file:
@@ -22,31 +24,39 @@ def update_predefined_ratings(game_identifier, ratings):
             csv_writer = csv.writer(file)
             for key, value in predefined_ratings.items():
                 csv_writer.writerow([key, value])
+                
+        logging.info(f"Predefined ratings updated for {game_identifier}.")
     except Exception as e:
         logging.error(f"Error updating predefined ratings: {e}")
         
 
 def save_ratings_to_file(ratings_dict):
+    logging.debug("Saving ratings to file.")
     file_path = get_data_file_path('ratings.csv')
-    with open(file_path, 'w', newline='', encoding='utf-8') as file:
-        csv_writer = csv.writer(file)
-        csv_writer.writerow([
-            'Game Title', 'Genre', 'Graphics', 'Physics and Collision Detection',
-            'Level Design and World Building', 'Gameplay Mechanics', 'AI and NPC Behavior',
-            'Audio', 'UI and UX', 'Multiplayer and Networking', 'Scripting and Programming', 'Comments'
-        ])
-        for game, data in ratings_dict.items():
+    try:
+        with open(file_path, 'w', newline='', encoding='utf-8') as file:
+            csv_writer = csv.writer(file)
             csv_writer.writerow([
-                game, data['genre'],
-                data['ratings']['Graphics'], data['ratings']['Physics and Collision Detection'],
-                data['ratings']['Level Design and World Building'], data['ratings']['Gameplay Mechanics'],
-                data['ratings']['AI and NPC Behavior'], data['ratings']['Audio'],
-                data['ratings']['UI and UX'], data['ratings']['Multiplayer and Networking'],
-                data['ratings']['Scripting and Programming'], data['comments']
+                'Game Title', 'Genre', 'Graphics', 'Physics and Collision Detection',
+                'Level Design and World Building', 'Gameplay Mechanics', 'AI and NPC Behavior',
+                'Audio', 'UI and UX', 'Multiplayer and Networking', 'Scripting and Programming', 'Comments'
             ])
+            for game, data in ratings_dict.items():
+                csv_writer.writerow([
+                    game, data['genre'],
+                    data['ratings']['Graphics'], data['ratings']['Physics and Collision Detection'],
+                    data['ratings']['Level Design and World Building'], data['ratings']['Gameplay Mechanics'],
+                    data['ratings']['AI and NPC Behavior'], data['ratings']['Audio'],
+                    data['ratings']['UI and UX'], data['ratings']['Multiplayer and Networking'],
+                    data['ratings']['Scripting and Programming'], data['comments']
+                ])
+        logging.info("Ratings successfully saved to file.")
+    except Exception as e:
+        logging.error(f"Error saving ratings to file: {e}")
              
 
 def load_ratings_from_csv(file_path):
+    logging.debug(f"Loading ratings from file: {file_path}")
     ratings_dict = {}
     try:
         with open(file_path, mode='r', encoding='utf-8') as file:
@@ -72,15 +82,14 @@ def load_ratings_from_csv(file_path):
                     'normalized_score': 0,  # Initialize with 0, will be calculated later
                     'comments': comments
                 }
+        logging.info(f"Ratings loaded from file: {file_path}")
     except Exception as e:
         logging.error(f"Error reading CSV file: {e}")
     return ratings_dict
 
 
 def normalize_ratings(ratings_dict):
-    logging.debug(f"Original Ratings: {ratings_dict}")
-    logging.debug(f"Normalizing ratings for {ratings_dict}")
-    
+    logging.debug("Starting normalization of ratings.")    
     if len(ratings_dict) <= 1:
         return ratings_dict
     
@@ -94,8 +103,7 @@ def normalize_ratings(ratings_dict):
 
     min_score = min(all_scores)
     max_score = max(all_scores)
-    logging.debug(f"Min Score: {min_score}, Max Score: {max_score}")
-    
+        
     normalized_ratings = {}
     for game, data in ratings_dict.items():
         normalized_score = (data['normalized_score'] - min_score) / (max_score - min_score) * 100 if max_score > min_score else 0
@@ -107,7 +115,7 @@ def normalize_ratings(ratings_dict):
         }
         logging.debug(f"Normalized score for {game}: {normalized_score:.2f}")
     
-    logging.debug(f"Normalized Ratings: {normalized_ratings}")
+    logging.info("Normalization of ratings completed.")
     return normalized_ratings
 
 
