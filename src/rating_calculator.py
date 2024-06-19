@@ -38,6 +38,7 @@ def scale_ratings(ratings):
     return scaled
 
 def calculate_complexity_rating(ratings, genre=None):
+    logging.debug(f"Calculating complexity rating for genre {genre} with ratings {ratings}")
     scaled_ratings = scale_ratings(ratings)
     total_weighted_score = 0
     

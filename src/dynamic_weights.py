@@ -20,8 +20,6 @@ dynamic_weighting_criteria = {
     # Add more genres and criteria as needed
 }
 
-# dynamic_weights.py
-
 genre_criteria = {
     'RPG': {
         'Graphics': 20,

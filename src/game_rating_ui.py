@@ -2,10 +2,10 @@
 
 import tkinter as tk
 from tkinter import messagebox
-import json
+import csv
 import logging
 from .code_generator import parse_input_code
-from .file_operations import update_predefined_ratings, save_ratings_to_file, load_ratings_from_file, normalize_ratings
+from .file_operations import get_data_file_path, update_predefined_ratings, save_ratings_to_file, load_ratings_from_csv, normalize_ratings
 from .rating_calculator import calculate_complexity_rating
 from .dynamic_weights import dynamic_weighting_criteria, detect_genre  # Import the dynamic weighting criteria
 
@@ -19,7 +19,7 @@ class GameRatingApp:
         self.root = root
         self.root.title("Game Development Complexity Rating System")
         
-        self.label = tk.Label(root, text="Enter the game data in JSON format:")
+        self.label = tk.Label(root, text="Enter the game data in CSV format:")
         self.label.pack()
         
         self.text = tk.Text(root, height=10, width=50)
@@ -37,7 +37,9 @@ class GameRatingApp:
 
     def load_ratings(self):
         try:
-            self.ratings_dict = load_ratings_from_file()
+            file_path = get_data_file_path('ratings.csv')
+            self.ratings_dict = load_ratings_from_csv(file_path)
+            self.ratings_dict = normalize_ratings(self.ratings_dict)
             self.update_listbox()
         except FileNotFoundError:
             self.ratings_dict = {}
@@ -46,38 +48,62 @@ class GameRatingApp:
 
     def update_listbox(self):
         self.listbox.delete(0, tk.END)
-        sorted_ratings = sorted(self.ratings_dict.items(), key=lambda item: item[1], reverse=True)
-        for i, (game, rating) in enumerate(sorted_ratings, start=1):
-            self.listbox.insert(tk.END, f"{i}. {game}: {rating:.2f}")
+        sorted_ratings = sorted(self.ratings_dict.items(), key=lambda item: item[1]['normalized_score'], reverse=True)
+        for i, (game, data) in enumerate(sorted_ratings, start=1):
+            self.listbox.insert(tk.END, f"{i}. {game}: {data['normalized_score']:.2f}")
         logging.debug("Listbox updated with sorted ratings.")
 
 
     def calculate_rating(self):
         input_data = self.text.get("1.0", tk.END)
         try:
-            game_data = json.loads(input_data)
-            game_identifier = game_data["game_identifier"]
-            ratings = game_data["ratings"]
-            
-            # Determine genre
-            genre = detect_genre(ratings)
-            logging.debug(f"Selected/Detected genre: {genre}")
-            
-            update_predefined_ratings(game_identifier, ratings)
-            score = calculate_complexity_rating(ratings, genre)
-            logging.debug(f"Calculated score: {score} for game: {game_identifier}")
-            
-            self.ratings_dict[game_identifier] = score
-            normalized_ratings = normalize_ratings(self.ratings_dict)  # Normalize ratings
-            logging.debug(f"Normalized ratings: {normalized_ratings}")
-            
-            save_ratings_to_file(normalized_ratings)  # Save normalized ratings
-            self.update_listbox()
-            logging.info(f"Rating calculated and saved for {game_identifier}: {normalized_ratings[game_identifier]:.2f}")
-            messagebox.showinfo("Rating", f"Game Development Complexity Rating for {game_identifier}: {normalized_ratings[game_identifier]:.2f}")
-        except (ValueError, json.JSONDecodeError) as e:
-            messagebox.showerror("Error", f"Invalid input: {e}")
-            logging.error(f"Invalid input: {e}")            
+            # Load CSV data from input
+            csv_reader = csv.DictReader(input_data.strip().split('\n'))
+            for row in csv_reader:
+                game_title = row['Game Title']
+                genre = row['Genre']
+                ratings = {
+                    'Graphics': int(row['Graphics']),
+                    'Physics and Collision Detection': int(row['Physics and Collision Detection']),
+                    'Level Design and World Building': int(row['Level Design and World Building']),
+                    'Gameplay Mechanics': int(row['Gameplay Mechanics']),
+                    'AI and NPC Behavior': int(row['AI and NPC Behavior']),
+                    'Audio': int(row['Audio']),
+                    'UI and UX': int(row['UI and UX']),
+                    'Multiplayer and Networking': int(row['Multiplayer and Networking']),
+                    'Scripting and Programming': int(row['Scripting and Programming'])
+                }
+                comments = row['Comments']
+
+                # Debug print to verify input data structure
+                logging.debug(f"Processing game: {game_title}, Genre: {genre}, Ratings: {ratings}, Comments: {comments}")
+
+                # Determine genre
+                detected_genre = detect_genre(ratings)
+                logging.debug(f"Selected/Detected genre: {detected_genre}")
+
+                # Update predefined ratings
+                update_predefined_ratings(game_title, ratings)
+                score = calculate_complexity_rating(ratings, detected_genre)
+                logging.debug(f"Calculated score: {score} for game: {game_title}")
+
+                self.ratings_dict[game_title] = {
+                    'genre': detected_genre,
+                    'ratings': ratings,
+                    'normalized_score': score,
+                    'comments': comments
+                }
+
+                normalized_ratings = normalize_ratings(self.ratings_dict)
+                logging.debug(f"Normalized Ratings: {normalized_ratings}")
+                save_ratings_to_file(normalized_ratings)  # Save normalized ratings
+                self.ratings_dict = normalized_ratings  # Update the ratings_dict with normalized ratings
+                self.update_listbox()
+                logging.info(f"Rating calculated and saved for {game_title}: {normalized_ratings[game_title]['normalized_score']:.2f}")
+                messagebox.showinfo("Rating", f"Game Development Complexity Rating for {game_title}: {normalized_ratings[game_title]['normalized_score']:.2f}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Unexpected error: {e}")
+            logging.error(f"Unexpected error: {e}")
         finally:
             self.text.delete("1.0", tk.END)
 
