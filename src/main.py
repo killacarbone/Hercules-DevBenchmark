@@ -1,58 +1,57 @@
-#main.py 
-
-import logging
-from .code_generator import parse_input_code
-from .file_operations import update_predefined_ratings, save_ratings_to_file, load_ratings_from_file
-from .rating_calculator import calculate_complexity_rating
-
+import logging  # Import logging module for logging messages
+from src.file_operations import get_data_file_path  # Import function from file_operations module
+from src.db_operations import create_connection, create_table  # Import functions from db_operations module
+from src.ui import GameRatingApp  # Import the GameRatingApp class
+import tkinter as tk  # Import tkinter for GUI
 
 # Configure logging
 logging.basicConfig(
-    level=logging.DEBUG,  # Change this to logging.INFO to reduce verbosity in production
-    format='%(asctime)s - %(levelname)s - %(message)s',
+    level=logging.DEBUG,  # Set logging level to DEBUG
+    format='%(asctime)s - %(levelname)s - %(message)s',  # Set logging format
     handlers=[
-        logging.FileHandler("app.log"),
-        logging.StreamHandler()
+        logging.FileHandler("app.log"),  # Log to a file named app.log
+        logging.StreamHandler()  # Log to the console
     ]
 )
+
+def initialize_database():
+    """Initialize the SQLite database and create tables if they do not exist."""
+    database = r"C:\Users\steph\Documents\Hercules DevBenchmark\hercules devbenchmark database\db\hercules_devbenchmark.db"  # Path to the database file
+
+    sql_create_games_table = """ CREATE TABLE IF NOT EXISTS Games (
+                                    game_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                    title TEXT NOT NULL,
+                                    genre TEXT NOT NULL,
+                                    comments TEXT
+                                ); """  # SQL statement to create Games table
+
+    sql_create_ratings_table = """CREATE TABLE IF NOT EXISTS Ratings (
+                                      rating_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                      game_id INTEGER NOT NULL,
+                                      factor TEXT NOT NULL,
+                                      score INTEGER NOT NULL,
+                                      FOREIGN KEY (game_id) REFERENCES Games (game_id)
+                                  );"""  # SQL statement to create Ratings table
+
+    conn = create_connection(database)  # Create a database connection
+
+    if conn is not None:  # create tables
+        create_table(conn, sql_create_games_table)  # Create Games table
+        create_table(conn, sql_create_ratings_table)  # Create Ratings table
+    else:
+        print("Error! cannot create the database connection.")  # Print error if connection fails
     
-    
+    return conn  # Return the connection object
+
 def main():
-    print("Welcome to the Game Development Complexity Rating System")
-    input_code = input("Enter the unique code for the game or genre you want to rate: ")
-
-    try:
-        game_identifier, ratings = parse_input_code(input_code)
-        logging.info(f"Parsed input code. Game Identifier: {game_identifier}, Ratings: {ratings}")
-    except ValueError as e:
-        logging.error(f"Error parsing input code: {e}")
-        print("Invalid input format. Please enter a valid code.")
-        return
-
-    try:
-        # Update predefined ratings
-        update_predefined_ratings(game_identifier, ratings)
-        logging.info(f"Updated predefined ratings for {game_identifier}")
-
-        # Calculate the complexity rating
-        score = calculate_complexity_rating(ratings)
-        print(f"Game Development Complexity Rating for {game_identifier}: {score:.2f} (out of 100)")
-        logging.info(f"Calculated complexity rating for {game_identifier}: {score:.2f}")
-
-        # Load existing ratings from file
-        ratings_dict = load_ratings_from_file()
-        logging.info("Loaded existing ratings from file")
-
-        # Update the dictionary with the new rating
-        ratings_dict[game_identifier] = score
-        logging.debug(f"Updated ratings dictionary: {ratings_dict}")
-
-        # Save updated ratings to file
-        save_ratings_to_file(ratings_dict)
-        logging.info(f"Saved updated ratings to file for {game_identifier}")
-    except Exception as e:
-        logging.error(f"An error occurred: {e}")
-        print("An error occurred while processing your request. Please try again later.")
+    """Main function to run the Game Development Complexity Rating System."""
+    conn = initialize_database()  # Initialize the database and get the connection object
+    if conn is not None:
+        root = tk.Tk()  # Create the main window
+        app = GameRatingApp(root, conn)  # Create an instance of the application
+        root.mainloop()  # Run the main loop
+    else:
+        print("Failed to initialize the database.")  # Print error if database initialization fails
 
 if __name__ == "__main__":
-    main()
+    main()  # Run the main function if the script is executed directly
