@@ -2,7 +2,7 @@ import tkinter as tk  # Import tkinter for GUI
 import logging  # Import logging module for logging messages
 import csv  # Import CSV module for handling CSV files
 from tkinter import messagebox  # Import messagebox for dialog boxes
-from src.file_operations import update_predefined_ratings, save_ratings_to_file, normalize_ratings  # Import functions from file_operations
+from src.file_operations import update_predefined_ratings_db, save_ratings_to_file, normalize_ratings  # Import functions from file_operations
 from src.rating_calculator import calculate_complexity_rating  # Import calculate_complexity_rating function
 from src.db_operations import insert_game, insert_rating, select_all_games, select_all_ratings  # Import functions from db_operations
 from src.dynamic_weights import detect_genre  # Import detect_genre function
@@ -42,8 +42,8 @@ class GameRatingApp:
                 ratings = select_all_ratings(self.conn)  # Query all ratings from the database
 
                 # Debugging statements to check data fetched
-                logging.debug(f"Games fetched: {games}")
-                logging.debug(f"Ratings fetched: {ratings}")
+                # logging.debug(f"Games fetched: {games}")
+                # logging.debug(f"Ratings fetched: {ratings}")
 
                 if not games or not ratings:
                     logging.error("Failed to load games or ratings from the database.")
@@ -55,7 +55,7 @@ class GameRatingApp:
                 for game in games:
                     game_id, title, genre, comments = game
                     game_ratings = {factor: score for _, _, factor, score in ratings if _ == game_id}
-                    logging.debug(f"Game ID: {game_id}, Title: {title}, Ratings: {game_ratings}")
+                    # logging.debug(f"Game ID: {game_id}, Title: {title}, Ratings: {game_ratings}")
 
                     self.ratings_dict[title] = {
                         'genre': genre,
@@ -76,7 +76,7 @@ class GameRatingApp:
         sorted_ratings = sorted(self.ratings_dict.items(), key=lambda item: item[1]['normalized_score'], reverse=True)
         for i, (game, data) in enumerate(sorted_ratings, start=1):
             self.listbox.insert(tk.END, f"{i}. {game}: {data['normalized_score']:.2f}")  # Insert sorted ratings into listbox
-        logging.debug("Listbox updated with sorted ratings.")
+        # logging.debug("Listbox updated with sorted ratings.")
 
     def calculate_rating(self):
         """ Calculate and display the game rating based on input data. """
@@ -103,11 +103,11 @@ class GameRatingApp:
                 logging.debug(f"Processing game: {game_title}, Genre: {genre}")
 
                 detected_genre = detect_genre(ratings)  # Detect the genre based on ratings
-                logging.debug(f"Detected genre: {detected_genre}")
+                # logging.debug(f"Detected genre: {detected_genre}")
                 
-                update_predefined_ratings(game_title, ratings)  # Update predefined ratings
+                update_predefined_ratings_db(game_title, ratings)  # Update predefined ratings in the database
                 score = calculate_complexity_rating(ratings, detected_genre)  # Calculate complexity rating
-                logging.info(f"Calculated score for {game_title}: {score}")
+                # logging.info(f"Calculated score for {game_title}: {score}")
 
                 self.ratings_dict[game_title] = {
                     'genre': detected_genre,
@@ -115,8 +115,13 @@ class GameRatingApp:
                     'normalized_score': score,
                     'comments': comments
                 }
-
+                
+                # Log detailed rating calculations
+                # logging.debug(f"Ratings for {game_title} before normalization: {ratings}")
                 self.ratings_dict = normalize_ratings(self.ratings_dict)  # Normalize ratings
+                #normalized_score = self.ratings_dict[game_title]['normalized_score'] # Fetch the normalized score from the dictionary for logging and further processing.
+                # logging.debug(f"Normalized score for {game_title}: {normalized_score}")
+
                 save_ratings_to_file(self.ratings_dict)  # Save ratings to file
                 self.update_listbox()  # Update the listbox
                 messagebox.showinfo("Rating", f"Game Development Complexity Rating for {game_title}: {self.ratings_dict[game_title]['normalized_score']:.2f}")  # Show rating

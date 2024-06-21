@@ -1,35 +1,82 @@
 import csv  # Import CSV module for handling CSV files
 import logging  # Import logging module for logging messages
 import os  # Import os module for file path operations
+import sqlite3  # Import sqlite3 module for SQLite database operations
+from sqlite3 import Error  # Import Error class from sqlite3
 from .rating_calculator import calculate_complexity_rating  # Import calculate_complexity_rating function
 
 def get_data_file_path(filename):
     """Construct the full path to a data file."""
     return os.path.join(os.path.dirname(__file__), '..', 'data', filename)  # Construct and return the full file path
 
-def update_predefined_ratings(game_identifier, ratings):
-    """Update predefined ratings in the CSV file for a given game."""
-    logging.debug(f"Updating predefined ratings for {game_identifier}.")  # Log the update operation
-    file_path = get_data_file_path('predefined_ratings.csv')  # Get the path to the predefined ratings CSV file
+def get_predefined_db_path():
+    """Return the path to the predefined ratings database."""
+    return r"C:\Users\steph\Documents\Hercules DevBenchmark\hercules devbenchmark database\db\predefined_ratings.db"
+
+def create_predefined_db_connection(db_file):
+    """Create a database connection to the SQLite database specified by db_file."""
+    conn = None
     try:
-        with open(file_path, 'r', newline='', encoding='utf-8') as file:  # Open the CSV file for reading
-            csv_reader = csv.reader(file)  # Create a CSV reader object
-            predefined_ratings = {rows[0]: rows[1] for rows in csv_reader}  # Read the CSV file into a dictionary
+        conn = sqlite3.connect(db_file)
+        logging.info(f"Connected to SQLite database: {db_file}")
+    except Error as e:
+        logging.error(e)
+    return conn
 
-        predefined_ratings[game_identifier] = ratings  # Update the dictionary with new ratings
+def create_predefined_tables(conn):
+    """Create predefined ratings table in the SQLite database."""
+    sql_create_predefined_ratings_table = """ CREATE TABLE IF NOT EXISTS PredefinedRatings (
+                                                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                                game_identifier TEXT NOT NULL,
+                                                graphics INTEGER,
+                                                physics INTEGER,
+                                                level_design INTEGER,
+                                                gameplay_mechanics INTEGER,
+                                                ai_behavior INTEGER,
+                                                audio INTEGER,
+                                                ui_ux INTEGER,
+                                                multiplayer INTEGER,
+                                                scripting INTEGER
+                                            ); """
+    try:
+        c = conn.cursor()
+        c.execute(sql_create_predefined_ratings_table)
+        logging.info("Predefined ratings table created or already exists.")
+    except Error as e:
+        logging.error(e)
 
-        with open(file_path, 'w', newline='', encoding='utf-8') as file:  # Open the CSV file for writing
-            csv_writer = csv.writer(file)  # Create a CSV writer object
-            for key, value in predefined_ratings.items():
-                csv_writer.writerow([key, value])  # Write each key-value pair to the CSV file
-                
-        logging.info(f"Predefined ratings updated for {game_identifier}.")  # Log successful update
-    except Exception as e:
-        logging.error(f"Error updating predefined ratings: {e}")  # Log any errors that occur
+def update_predefined_ratings_db(game_identifier, ratings):
+    """Update predefined ratings in the database for a given game."""
+    db_path = get_predefined_db_path()
+    conn = create_predefined_db_connection(db_path)
+    if conn:
+        try:
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT OR REPLACE INTO PredefinedRatings 
+                (game_identifier, graphics, physics, level_design, gameplay_mechanics, ai_behavior, audio, ui_ux, multiplayer, scripting)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                game_identifier, 
+                ratings['Graphics'], 
+                ratings['Physics and Collision Detection'], 
+                ratings['Level Design and World Building'], 
+                ratings['Gameplay Mechanics'], 
+                ratings['AI and NPC Behavior'], 
+                ratings['Audio'], 
+                ratings['UI and UX'], 
+                ratings['Multiplayer and Networking'], 
+                ratings['Scripting and Programming']
+            ))
+            conn.commit()
+            logging.info(f"Predefined ratings updated for {game_identifier}.")
+        except Error as e:
+            logging.error(f"Error updating predefined ratings in the database: {e}")
+        finally:
+            conn.close()
 
 def save_ratings_to_file(ratings_dict):
     """Save the ratings dictionary to a CSV file."""
-    logging.debug("Saving ratings to file.")  # Log the save operation
     file_path = get_data_file_path('ratings.csv')  # Get the path to the ratings CSV file
     try:
         with open(file_path, 'w', newline='', encoding='utf-8') as file:  # Open the CSV file for writing
@@ -55,40 +102,6 @@ def save_ratings_to_file(ratings_dict):
 def load_ratings_from_file():
     """Load existing ratings from the ratings file."""
     file_path = get_data_file_path('ratings.csv')  # Get the path to the ratings CSV file
-    logging.debug(f"Loading ratings from file: {file_path}")  # Log the load operation
-    ratings_dict = {}
-    try:
-        with open(file_path, mode='r', encoding='utf-8') as file:  # Open the CSV file for reading
-            csv_reader = csv.DictReader(file)  # Create a CSV dictionary reader object
-            for row in csv_reader:
-                game_title = row['Game Title']  # Extract the game title
-                genre = row['Genre']  # Extract the genre
-                ratings = {
-                    'Graphics': int(row['Graphics']),
-                    'Physics and Collision Detection': int(row['Physics and Collision Detection']),
-                    'Level Design and World Building': int(row['Level Design and World Building']),
-                    'Gameplay Mechanics': int(row['Gameplay Mechanics']),
-                    'AI and NPC Behavior': int(row['AI and NPC Behavior']),
-                    'Audio': int(row['Audio']),
-                    'UI and UX': int(row['UI and UX']),
-                    'Multiplayer and Networking': int(row['Multiplayer and Networking']),
-                    'Scripting and Programming': int(row['Scripting and Programming'])
-                }  # Extract and convert the ratings
-                comments = row['Comments']  # Extract the comments
-                ratings_dict[game_title] = {
-                    'genre': genre,
-                    'ratings': ratings,
-                    'normalized_score': 0,  # Initialize normalized score
-                    'comments': comments
-                }  # Add the game ratings to the dictionary
-        logging.info(f"Ratings loaded from file: {file_path}")  # Log successful load
-    except Exception as e:
-        logging.error(f"Error reading CSV file: {e}")  # Log any errors that occur
-    return ratings_dict  # Return the ratings dictionary
-
-def load_ratings_from_csv(file_path):
-    """Load ratings from a CSV file and return as a dictionary."""
-    logging.debug(f"Loading ratings from file: {file_path}")  # Log the load operation
     ratings_dict = {}
     try:
         with open(file_path, mode='r', encoding='utf-8') as file:  # Open the CSV file for reading
@@ -135,6 +148,10 @@ def normalize_ratings(ratings_dict):
 
     min_score = min(all_scores)  # Find the minimum score
     max_score = max(all_scores)  # Find the maximum score
+    
+    logging.debug(f"All scores before normalization: {all_scores}")
+    logging.debug(f"Min score: {min_score}, Max score: {max_score}")
+
         
     normalized_ratings = {}
     for game, data in ratings_dict.items():

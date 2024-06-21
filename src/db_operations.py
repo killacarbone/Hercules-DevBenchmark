@@ -8,7 +8,9 @@ def create_connection(db_file):
     try:
         conn = sqlite3.connect(db_file)  # Connect to the database
         print(f"Connected to SQLite database: {db_file}")  # Print success message
+        logging.info(f"Connected to SQLite database: {db_file}")  # Use logging instead of print
     except Error as e:
+        logging.error(f"Error connecting to database: {e}")  # Use logging for errors
         print(e)  # Print error message
     return conn  # Return the connection object
 
@@ -17,7 +19,9 @@ def create_table(conn, create_table_sql):
     try:
         c = conn.cursor()  # Create a cursor object
         c.execute(create_table_sql)  # Execute the create table statement
+        logging.info(f"Table created with SQL: {create_table_sql}")  # Log table creation
     except Error as e:
+        logging.error(f"Error creating table: {e}")  # Use logging for errors
         print(e)  # Print error message
 
 def insert_game(conn, game):
@@ -27,6 +31,7 @@ def insert_game(conn, game):
     cur = conn.cursor()  # Create a cursor object
     cur.execute(sql, game)  # Execute the insert statement
     conn.commit()  # Commit the transaction
+    logging.info(f"Inserted game into database: {game}")  # Log successful insertion
     return cur.lastrowid  # Return the last row ID
 
 def insert_rating(conn, rating):
@@ -36,6 +41,7 @@ def insert_rating(conn, rating):
     cur = conn.cursor()  # Create a cursor object
     cur.execute(sql, rating)  # Execute the insert statement
     conn.commit()  # Commit the transaction
+    # logging.info(f"Inserted rating into database: {rating}")  # Log successful insertion
     return cur.lastrowid  # Return the last row ID
 
 def select_all_games(conn):
@@ -51,6 +57,6 @@ def select_all_ratings(conn):
     cur = conn.cursor()  # Create a cursor object
     cur.execute("SELECT * FROM Ratings")  # Execute the select statement
     rows = cur.fetchall()  # Fetch all rows
-    logging.debug(f"select_all_ratings fetched: {rows}")  # Add this line for debugging
+    # logging.debug(f"select_all_ratings fetched: {rows}")  # Add this line for debugging
     return rows  # Return fetched rows
 

@@ -19,8 +19,8 @@ def scale_ratings(ratings: Dict[str, int]) -> Dict[str, float]:
     """Scale ratings to a 0-100 scale."""
     max_rating = 1000  # Maximum rating value
     scaled = {factor: (rating / max_rating) * 100 for factor, rating in ratings.items()}  # Scale each rating
-    print(f"Scaled Ratings: {scaled}")  # Debugging
-    logging.debug(f"Scaled Ratings: {scaled}")  # Log scaled ratings
+    # print(f"Scaled Ratings: {scaled}")  # Debugging
+    # logging.debug(f"Scaled Ratings: {scaled}")  # Log scaled ratings
     return scaled  # Return scaled ratings
 
 def calculate_complexity_rating(ratings: Dict[str, int], genre: Optional[str] = None) -> float:
@@ -45,7 +45,7 @@ def calculate_complexity_rating(ratings: Dict[str, int], genre: Optional[str] = 
         # Compute the weighted score
         for factor, weight in weights.items():
             rating = scaled_ratings.get(factor, 0)  # Get scaled rating for factor
-            logging.debug(f"Factor: {factor}, Weight: {weight}, Scaled Rating: {rating}")  # Log each factor's details
+            # logging.debug(f"Factor: {factor}, Weight: {weight}, Scaled Rating: {rating}")  # Log each factor's details
             total_weighted_score += rating * weight  # Add weighted rating to total
         
         normalized_score = (total_weighted_score / max_possible_score) * 100  # Normalize the score to 0-100
@@ -60,19 +60,19 @@ def calculate_complexity_rating(ratings: Dict[str, int], genre: Optional[str] = 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # For testing
-if __name__ == "__main__":
-    sample_ratings = {
-        'Graphics': 900,
-        'Physics and Collision Detection': 850,
-        'Level Design and World Building': 920,
-        'Gameplay Mechanics': 880,
-        'AI and NPC Behavior': 800,
-        'Audio': 850,
-        'UI and UX': 820,
-        'Multiplayer and Networking': 700,
-        'Scripting and Programming': 860
-    }
+# if __name__ == "__main__":
+#     sample_ratings = {
+#         'Graphics': 900,
+#         'Physics and Collision Detection': 850,
+#         'Level Design and World Building': 920,
+#         'Gameplay Mechanics': 880,
+#         'AI and NPC Behavior': 800,
+#         'Audio': 850,
+#         'UI and UX': 820,
+#         'Multiplayer and Networking': 700,
+#         'Scripting and Programming': 860
+#     }
 
-    print(calculate_complexity_rating(sample_ratings, genre='RPG'))  # Test calculation for RPG
-    print(calculate_complexity_rating(sample_ratings, genre='Shooter'))  # Test calculation for Shooter
-    print(calculate_complexity_rating(sample_ratings))  # Test calculation with no genre
+#     print(calculate_complexity_rating(sample_ratings, genre='RPG'))  # Test calculation for RPG
+#     print(calculate_complexity_rating(sample_ratings, genre='Shooter'))  # Test calculation for Shooter
+#     print(calculate_complexity_rating(sample_ratings))  # Test calculation with no genre

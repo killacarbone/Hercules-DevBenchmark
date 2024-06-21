@@ -24,7 +24,7 @@ def detect_genre(ratings: Dict[str, Any]) -> Optional[str]:
     """ Detect the genre of a game based on provided ratings. """
     try:
         logging.debug("Starting genre detection.")  # Log the start of genre detection
-        logging.debug(f"Ratings provided: {ratings}")  # Log the provided ratings
+        # logging.debug(f"Ratings provided: {ratings}")  # Log the provided ratings
 
         # Calculate scores for each genre
         scores = {genre: sum(min(ratings.get(factor, 0) / weight, 1) for factor, weight in criteria.items())

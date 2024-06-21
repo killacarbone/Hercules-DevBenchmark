@@ -1,6 +1,4 @@
 Game Title,Genre,Graphics,Physics and Collision Detection,Level Design and World Building,Gameplay Mechanics,AI and NPC Behavior,Audio,UI and UX,Multiplayer and Networking,Scripting and Programming,Comments
-The Witcher 3: Wild Hunt,Shooter,850,800,900,880,750,820,800,700,850,"The game features an immersive storyline with excellent world-building and complex gameplay mechanics, but the AI behavior could be improved."
-Final Fantasy XV,RPG,820,780,850,860,730,810,780,0,840,Great graphics and story but some issues with AI and collision detection.
-Skyrim,RPG,800,750,860,870,720,790,760,0,830,"Immersive world and gameplay, but some bugs and AI issues."
-Dragon Age: Inquisition,RPG,840,790,880,860,740,800,770,0,850,"Strong story and graphics, but occasional issues with gameplay mechanics and AI."
-Persona 5,RPG,830,810,870,850,760,810,790,0,860,"Excellent graphics and story with solid gameplay mechanics, but limited multiplayer options."
+Test Game,RPG,800,750,900,850,700,800,750,600,800,This is a test game
+Space Adventure,Shooter,850,800,950,900,700,850,800,700,850,This is a space adventure game
+Zombie Shooter,Shooter,900,850,800,750,700,800,750,900,850,This is a zombie shooter game
