@@ -1,5 +1,5 @@
 import logging  # Import logging module for logging messages
-from src.file_operations import create_predefined_db_connection, create_predefined_tables, get_predefined_db_path  # Import necessary functions
+from src.file_operations import create_predefined_db_connection, create_predefined_tables, get_predefined_db_path, load_predefined_ratings  # Import necessary functions
 from src.db_operations import create_connection, create_table  # Import functions from db_operations module
 from src.ui import GameRatingApp  # Import the GameRatingApp class
 import tkinter as tk  # Import tkinter for GUI
@@ -21,6 +21,7 @@ def initialize_predefined_database():
 
     if conn is not None:
         create_predefined_tables(conn)  # Create the predefined ratings table
+        load_predefined_ratings()  # Load predefined ratings into the database
         conn.close()  # Close the connection
     else:
         logging.error("Error! Cannot create the predefined database connection.")
